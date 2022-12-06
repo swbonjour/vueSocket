@@ -14,11 +14,24 @@ socket.on('users', (usersSockets) => {
 
 socket.on('userConnected', (user) => {
     users.value.push({...user, status: 'connected'});
+    const mapedUsers = users.value.map(u => u.username);
+    let indexes = [];
+    for(let i = 0; i < mapedUsers.length; i++) {
+        if(user.username == mapedUsers[i]) {
+            indexes.push(i);
+        }
+    }
+    console.log(indexes);
+    if(indexes.length != 1) {
+        users.value.pop();
+        users.value[indexes[0]].status = 'connected';
+        return;
+    }
 })
 
-socket.on('userDisconnected', (id) => {
+socket.on('userDisconnected', (username) => {
     users.value.forEach((user) => {
-        if(user.userID == id) {
+        if(user.username == username) {
             user.status = 'disconnected';
         }
     })

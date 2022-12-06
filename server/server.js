@@ -26,7 +26,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', () => {
-        socket.broadcast.emit('userDisconnected', (socket.id));
+        socket.broadcast.emit('userDisconnected', (socket.handshake.auth.username));
     })
 });
 

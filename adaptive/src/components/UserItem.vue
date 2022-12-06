@@ -1,4 +1,6 @@
 <script setup>
+import OnlineSvg from '../assets/OnlineSvg.vue';
+import OfflineSvg from '../assets/OfflineSvg.vue';
 const props = defineProps({
     username: String,
     status: String,
@@ -8,7 +10,12 @@ const props = defineProps({
 <template>
     <div class="user-wrapper">
         <div class="user-username">{{ props.username }}</div>
-        <div class="user-status">{{ props.status }}</div>
+        <div class="user-status" v-if="props.status == 'connected'">
+            <OnlineSvg />
+        </div>
+        <div class="user-status" v-else>
+            <OfflineSvg />
+        </div>
     </div>
 </template>
 
