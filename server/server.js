@@ -11,6 +11,7 @@ io.on('connection', (socket) => {
         users.push({
             userID: id,
             username: socket.handshake.auth.username,
+            messages: [],
         })
     }
 
@@ -23,6 +24,11 @@ io.on('connection', (socket) => {
 
     socket.on('sendMessage', (message) => {
         socket.broadcast.emit('recieveMessage', (message));
+    })
+
+    socket.on('sendPrivateMessage', ({ message, to }) => {
+        console.log(message);
+        socket.to(to).emit('recievePrivateMessage', { message: message, username: socket.handshake.auth.username });
     })
 
     socket.on('disconnect', () => {

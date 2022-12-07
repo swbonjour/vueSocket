@@ -2,7 +2,8 @@
 import UserItem from "./UserItem.vue";
 import ChatInput from "./ChatInput.vue";
 import socket from "../socket";
-import { users } from "../store";
+import { users, selectedUser } from "../store";
+import ChatInputPrivate from './ChatInputPrivate.vue';
 
 socket.on('users', (usersSockets) => {
     users.value = [...usersSockets];
@@ -36,15 +37,20 @@ socket.on('userDisconnected', (username) => {
         }
     })
 })
+
+function selectUser(user) {
+    selectedUser.value = user;
+}
 </script>
 
 <template>
     <div class="chat-wrapper">
         <div class="users-online">
-            <UserItem v-for="user in users" :key="user.userID" :username="user.username" :status="user.status" />
+            <UserItem v-for="user in users" :key="user.userID" :username="user.username" :status="user.status" @select="selectUser(user)" :selected="selectedUser == user"/>
         </div>
         <div class="chat">
-            <ChatInput />
+            <ChatInput v-show="!selectedUser"/>
+            <ChatInputPrivate v-show="selectedUser" :user-selected="selectedUser"/>
         </div>
     </div>
 </template>

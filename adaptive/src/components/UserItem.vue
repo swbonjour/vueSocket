@@ -4,11 +4,12 @@ import OfflineSvg from '../assets/OfflineSvg.vue';
 const props = defineProps({
     username: String,
     status: String,
+    selected: Boolean,
 })
 </script>
 
 <template>
-    <div class="user-wrapper">
+    <div class="user-wrapper" :class="{ selected: selected }" @click="$emit('select')">
         <div class="user-username">{{ props.username }}</div>
         <div class="user-status" v-if="props.status == 'connected'">
             <OnlineSvg />
@@ -28,5 +29,9 @@ const props = defineProps({
     align-items: center;
     padding: 2rem;
     font-size: calc(8px + 8 * (100vw / 1280));
+}
+
+.selected {
+    background-color: rgb(82, 2, 2);
 }
 </style>
